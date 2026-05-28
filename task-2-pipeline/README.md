@@ -3,33 +3,32 @@
 ## What This Is
 
 A Python data pipeline that:
-1. Fetches hourly weather data from [Open-Meteo](https://open-meteo.com/) (free, no API key)
-2. Cleans and transforms the nested JSON into a flat, analytics-ready table
-3. Enriches it with derived fields that add analytical value
+1. Fetches hourly weather data from [Open-Meteo](https://open-meteo.com/) (free, no API key needed)
+2. Cleans and transforms the raw JSON into a flat, analytics-ready table
+3. Adds derived fields that go beyond what the API returns
 4. Loads the result into Google BigQuery
-
-The pipeline is parameterised, logs its progress, handles errors gracefully, and can process multiple cities in a single run.
 
 ---
 
 ## Why Open-Meteo?
 
-- No API key or account required — zero friction for a demo pipeline
-- Returns rich, nested JSON that demonstrates real transformation work (flattening, type coercion, null handling)
-- Hourly granularity gives enough rows to make aggregation queries meaningful
-- Directly relevant to a marketing tech context: weather data correlates with consumer behaviour and campaign performance in retail, travel, and FMCG verticals
+- No API key required — easy for anyone to run without setup
+- Returns nested JSON — good for demonstrating real transformation work
+- Free and reliable — no rate limit issues for a demo pipeline
+- Hourly data gives enough rows to make SQL aggregations meaningful
 
 ---
 
 ## Repository Structure
 
 ```
-task2/
-├── pipeline.py          # Main pipeline: fetch → transform → load
-├── requirements.txt     # Python dependencies
+task-2-pipeline/
+├── pipeline.py            # Main pipeline: fetch → transform → load
+├── test_pipeline.py       # 13 unit tests for transform logic
+├── requirements.txt       # Python dependencies
 ├── sql/
-│   └── summary_queries.sql   # 5 BigQuery SQL queries with sample use cases
-└── README.md            # This file
+│   └── summary_queries.sql   # 5 BigQuery SQL queries
+└── README.md              # This file
 ```
 
 ---
@@ -46,33 +45,28 @@ pip install -r requirements.txt
 
 ### 2. BigQuery Sandbox (free, no credit card)
 
-Follow these steps exactly:
-
 1. Go to [console.cloud.google.com/bigquery](https://console.cloud.google.com/bigquery) and sign in with a Google account
-2. A default project is created automatically (it will have a name like `my-project-123456`) — note this project ID
-3. In the BigQuery console left panel, click your project name → **Create dataset**
+2. Note your project ID shown in the top bar (e.g. `poised-honor-428405-n6`)
+3. Click your project → **Create dataset**
    - Dataset ID: `weather_pipeline`
-   - Location: choose any region (e.g. `US` or `europe-west2`)
    - Leave everything else as default → **Create**
 
-> **Sandbox limitations to be aware of:**  
-> The BigQuery Sandbox does not support DML operations (UPDATE, DELETE, MERGE) or scheduled queries. This pipeline uses `WRITE_APPEND` load jobs, which are fully supported. The 10 GB free storage and 1 TB free query limits are more than enough for this task.
+> **Sandbox limitations:** No DML (UPDATE/DELETE/MERGE), no scheduled queries. This pipeline uses WRITE_APPEND load jobs which are fully supported in the Sandbox.
 
 ### 3. Authenticate locally
 
-Install the [Google Cloud CLI](https://cloud.google.com/sdk/docs/install), then:
+Install [Google Cloud CLI](https://cloud.google.com/sdk/docs/install), then:
 
 ```bash
-gcloud auth application-default login
+gcloud auth application-default login --scopes="https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/userinfo.email,openid"
+gcloud auth application-default set-quota-project your-project-id
 ```
-
-This sets up Application Default Credentials (ADC). The `google-cloud-bigquery` library picks these up automatically — no service account JSON file needed for local development.
 
 ---
 
 ## Running the Pipeline
 
-### Basic run (default: London, New York, Tokyo — last 7 days)
+### Default run (London, New York, Tokyo — last 7 days)
 ```bash
 python pipeline.py --project your-project-id
 ```
@@ -80,45 +74,43 @@ python pipeline.py --project your-project-id
 ### Custom cities and date range
 ```bash
 python pipeline.py \
-  --cities "London,Paris,Dubai,Singapore" \
-  --start-date 2024-01-01 \
-  --end-date 2024-01-31 \
+  --cities "London,Paris,Chennai" \
+  --start-date 2026-05-01 \
+  --end-date 2026-05-28 \
   --project your-project-id
 ```
 
-### Dry run (fetch + transform only, no BigQuery write)
+### Dry run (no BigQuery write)
 ```bash
 python pipeline.py --dry-run
 ```
 
-### All available cities
-`London`, `New York`, `Tokyo`, `Mumbai`, `Sydney`, `Paris`, `Dubai`, `Singapore`
+### Available cities
+London, New York, Tokyo, Mumbai, Sydney, Paris, Dubai, Singapore, Chennai
 
-(Add more by extending the `CITY_COORDS` dict in `pipeline.py`)
+To add a new city, add its latitude and longitude to the `CITY_COORDS` dictionary in `pipeline.py`.
 
 ---
 
-## What the Pipeline Does
+## How It Works
 
-### Fetch
-Calls the Open-Meteo `/v1/forecast` endpoint with hourly variables: temperature, apparent temperature, humidity, precipitation, wind speed, and WMO weather code. Handles timeouts, HTTP errors, and malformed responses explicitly.
+### Step 1 — Fetch
+Calls Open-Meteo API with city coordinates and date range. Returns hourly JSON data for 6 variables. Handles timeouts, HTTP errors, and unexpected responses — if one city fails, the others still run.
 
-### Transform
-Flattens the nested `hourly` JSON object into a flat DataFrame. Then:
+### Step 2 — Transform
+Flattens nested JSON into a flat DataFrame. Handles nulls and bad values. Adds 6 derived fields:
 
 | Derived Field | What It Is | Why It's Useful |
 |---|---|---|
-| `weather_description` | Human-readable label for WMO weather code | Makes raw codes queryable/filterable |
-| `thermal_discomfort_delta` | `feels_like_c − temperature_c` | Captures wind chill / humidity effect; negative = colder than actual |
-| `hour_of_day` | Integer 0–23 | Enables hourly aggregations without parsing timestamps |
-| `date` | String YYYY-MM-DD | Enables daily groupings in SQL |
-| `is_raining` | Boolean (`precipitation_mm > 0`) | Simplifies rain-day analysis |
-| `wind_category` | Beaufort-based label (Calm → Near gale) | Human-readable wind strength |
+| `weather_description` | Human-readable label for WMO weather code | Makes codes like 61 readable as "Slight rain" |
+| `thermal_discomfort_delta` | Feels-like minus actual temperature | Shows wind chill or humidity effect |
+| `hour_of_day` | Integer 0–23 | Enables hourly trend analysis in SQL |
+| `date` | YYYY-MM-DD string | Enables daily grouping in SQL |
+| `is_raining` | Boolean — True if precipitation > 0 | Simple flag for rain-day filtering |
+| `wind_category` | Beaufort scale label | Human-readable wind strength |
 
-Nulls are handled per column: numeric columns coerced with `pd.to_numeric(errors='coerce')`, timestamps with `errors='coerce'` then dropped if unparseable.
-
-### Load
-Uses `bigquery.LoadJobConfig` with `WRITE_APPEND` — safe to re-run without duplicating schema, and compatible with BigQuery Sandbox. Schema is explicitly defined (not inferred) for reliability.
+### Step 3 — Load
+Writes the clean DataFrame to BigQuery using an explicitly defined schema. Uses `WRITE_APPEND` — safe to re-run without duplicating schema, compatible with BigQuery Sandbox.
 
 ---
 
@@ -141,15 +133,15 @@ Uses `bigquery.LoadJobConfig` with `WRITE_APPEND` — safe to re-run without dup
 | `date` | STRING | Derived |
 | `is_raining` | BOOL | Derived |
 | `wind_category` | STRING | Derived |
-| `pipeline_run_date` | STRING | When the pipeline ran |
+| `pipeline_run_date` | STRING | When pipeline ran |
 
 ---
 
 ## SQL Queries
 
-See [`sql/summary_queries.sql`](sql/summary_queries.sql) for the full set. Replace `your-project-id` with your GCP project ID before running.
+See [`sql/summary_queries.sql`](sql/summary_queries.sql) for all 5 queries. Replace `your-project-id` before running.
 
-### Sample: Daily temperature summary (Query 1)
+### Query 1 — Daily temperature summary
 
 ```sql
 SELECT
@@ -166,7 +158,7 @@ GROUP BY city, date
 ORDER BY city, date DESC;
 ```
 
-**Sample output** (illustrative — your actual values will vary by date): **Actual output** (run on 2026-05-28):
+**Actual output (run on 2026-05-28):**
 
 | city | date | avg_temp_c | min_temp_c | max_temp_c | total_rain_mm | rainy_hours |
 |---|---|---|---|---|---|---|
@@ -178,37 +170,50 @@ ORDER BY city, date DESC;
 
 ---
 
-## Production Thinking (Step 5)
+## Running the Tests
+
+```bash
+pip install pytest
+pytest test_pipeline.py -v
+```
+
+**Result: 13 passed**
+
+Tests cover:
+- Output shape and column names are correct
+- Derived field calculations are accurate
+- Null and bad string values are handled without crashing
+- City coordinates config is valid
+
+---
+
+## Production Thinking
 
 ### How would you schedule this pipeline to run automatically?
 
-For a simple setup: **Google Cloud Scheduler** + **Cloud Run Jobs**. Containerise `pipeline.py` with Docker, deploy it as a Cloud Run Job, and trigger it on a cron schedule (e.g. `0 6 * * *` for 6 AM UTC daily). This costs almost nothing at this data volume and requires no infrastructure to manage.
+Use **Google Cloud Scheduler** to trigger a **Cloud Run Job** on a daily cron (e.g. `0 6 * * *`). Package `pipeline.py` into a Docker container, deploy as a Cloud Run Job. No servers to manage, costs almost nothing at this data volume.
 
-For a more mature setup: use **Cloud Composer** (managed Airflow) if this pipeline is one step in a larger DAG — e.g. fetch weather → join with campaign spend data → write to a reporting table.
+For a more complex setup with multiple dependent pipelines, **Cloud Composer** (managed Airflow) would be the right choice.
 
 ### How would you know if it failed?
 
 Three layers:
-1. **Exit codes**: `pipeline.py` calls `sys.exit(1)` on total failure. Cloud Run Jobs treats non-zero exits as failures and surfaces them in the console.
-2. **Cloud Logging**: all `log.error(...)` calls write to Cloud Logging automatically when running in GCP. Set a log-based alert to fire on `ERROR` severity → notify via email or Slack via Cloud Monitoring.
-3. **BigQuery row count check**: after each run, a lightweight validation query (`SELECT COUNT(*) FROM table WHERE pipeline_run_date = TODAY`) confirms rows were written. If count is 0, trigger an alert.
+1. **Exit codes** — `pipeline.py` exits with code 1 on failure. Cloud Run Jobs treat non-zero exits as failures and surface them in the console.
+2. **Cloud Logging** — all `log.error()` calls write to Cloud Logging automatically in GCP. Set a log-based alert on ERROR severity to notify via email or Slack.
+3. **Row count check** — after each run, a validation query checks `SELECT COUNT(*) WHERE pipeline_run_date = TODAY`. If count is 0, trigger an alert.
 
-### What would you add or change if this pipeline needed to scale to 10x the data volume?
+### What would you add if this pipeline needed to scale to 10x the data volume?
 
-At 10x scale (say, 1,000 cities × 90-day backfill = ~2.1M rows per run):
-
-- **Parallelise fetches**: replace the sequential city loop with `concurrent.futures.ThreadPoolExecutor`. The Open-Meteo API is stateless, so concurrent requests are safe.
-- **Batch BigQuery loads**: instead of one combined DataFrame load, write partitioned Parquet files to GCS first, then use `bigquery.LoadJobConfig` with a GCS URI. This is faster and more memory-efficient than in-memory DataFrame uploads for large volumes.
-- **Add date-partitioning** to the BigQuery table on the `date` column. This makes time-range queries significantly cheaper and faster.
-- **Idempotency**: add a `WRITE_TRUNCATE` partition-level strategy so re-running a day's data replaces rather than duplicates it.
-- **Schema evolution**: use `ALLOW_FIELD_ADDITION` (already included) and pin schema versions so adding a new derived field doesn't break existing queries.
+- **Parallel city fetches** — replace the sequential loop with `ThreadPoolExecutor`. Each city's API call is independent so parallel requests are safe.
+- **GCS-based loads** — write Parquet files to Google Cloud Storage first, then load from GCS URI instead of uploading a DataFrame directly. Faster and more memory-efficient at scale.
+- **Date partitioning** — add `time_partitioning` on the `date` column in BigQuery. Makes time-range queries significantly cheaper.
+- **Idempotency** — add partition-level overwrite so re-running a day replaces rather than duplicates data.
 
 ---
 
 ## What I Would Revisit With More Time
 
-- **Idempotency**: currently `WRITE_APPEND` means re-running the pipeline for the same date range will duplicate rows. With more time I'd add a pre-load deduplication step or use partition-overwrite semantics.
-- **Historical backfill mode**: add a `--backfill-months N` flag that chunks requests into 90-day windows (Open-Meteo's max per call) automatically.
-- **Unit tests**: the `transform()` function is pure and deterministic — it's straightforward to test with `pytest` + a fixture of raw API JSON.
-- **Config file**: move city coordinates and the BigQuery table ref into a `config.yaml` so non-engineers can adjust scope without touching Python.
-- **Marketing relevance**: in a real deployment, I'd join this weather table with campaign spend or conversion data in BigQuery to surface correlations — e.g. "did rainy weekends in London correlate with higher online conversion rates for our client's delivery brand?"
+- **Idempotency** — currently WRITE_APPEND means re-running the same date range duplicates rows. I would add a deduplication step or partition-overwrite strategy.
+- **Unit tests for fetch** — the `fetch_weather` function makes a real HTTP call. With more time I'd mock the API response with `unittest.mock` to test error handling without hitting the network.
+- **Config file** — move city coordinates and BigQuery table ref into a `config.yaml` so non-engineers can adjust scope without editing Python.
+- **Marketing context** — in a real deployment I'd join this weather table with campaign spend or conversion data in BigQuery to find correlations — e.g. do rainy days drive higher online conversions for a delivery brand?
