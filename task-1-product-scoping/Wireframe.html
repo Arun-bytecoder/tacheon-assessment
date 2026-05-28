@@ -3,511 +3,377 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MarketPulse v1 — Wireframe</title>
+<title>MarketPulse v1 — Wireframe Sketch</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --bg: #0f0f11;
-    --surface: #17171a;
-    --surface-2: #1e1e22;
-    --border: #2a2a2f;
-    --text: #e8e8ec;
-    --text-muted: #6b6b78;
-    --text-dim: #3a3a42;
-    --accent: #e8ff47;
-    --up: #3ddc84;
-    --down: #ff5c5c;
-    --watch: #ffb347;
-    --mono: 'IBM Plex Mono', monospace;
-    --sans: 'IBM Plex Sans', sans-serif;
-  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    font-family: var(--sans);
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    color: #333;
     font-size: 14px;
   }
 
-  /* ── WIREFRAME LABEL ── */
-  .wireframe-banner {
-    background: var(--accent);
-    color: #0f0f11;
+  /* Wireframe banner */
+  .banner {
+    background: #fffbe6;
+    border-bottom: 2px dashed #f0c000;
     text-align: center;
-    padding: 6px;
-    font-family: var(--mono);
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.1em;
+    padding: 8px;
+    font-size: 12px;
+    color: #888;
+    letter-spacing: 0.05em;
   }
 
-  /* ── TOP BAR ── */
-  .topbar {
+  /* Top nav */
+  .navbar {
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    padding: 12px 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 14px 28px;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
-    position: sticky;
-    top: 0;
-    z-index: 10;
   }
-
-  .logo {
-    font-family: var(--mono);
-    font-weight: 500;
-    font-size: 15px;
-    letter-spacing: -0.02em;
-    color: var(--accent);
+  .navbar .logo {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
   }
-  .logo span { color: var(--text-muted); }
-
-  .brand-select-wrap {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .brand-select-wrap label {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-muted);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  select {
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 7px 12px;
-    font-family: var(--mono);
-    font-size: 13px;
+  .navbar select {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
     border-radius: 4px;
-    cursor: pointer;
-    outline: none;
-    appearance: none;
-    padding-right: 28px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%236b6b78' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    transition: border-color 0.15s;
+    font-size: 13px;
+    background: #fff;
   }
-  select:hover { border-color: #444; }
-  select:focus { border-color: var(--accent); }
-
-  .topbar-right {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-muted);
-  }
-  .pulse-dot {
-    width: 7px; height: 7px;
-    background: var(--up);
-    border-radius: 50%;
-    animation: pulse 2.5s ease-in-out infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
+  .navbar .refresh-info {
+    font-size: 12px;
+    color: #888;
   }
 
-  /* ── MAIN ── */
-  main {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 32px 28px;
+  /* Main layout */
+  .container {
+    max-width: 960px;
+    margin: 24px auto;
+    padding: 0 20px;
   }
 
-  /* ── PAGE HEADER ── */
-  .page-header {
-    margin-bottom: 28px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
+  /* Page title */
+  .page-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 4px;
   }
-  .page-header h1 {
-    font-size: 22px;
-    font-weight: 600;
-    letter-spacing: -0.03em;
-  }
-  .page-header .week-label {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-muted);
-    letter-spacing: 0.06em;
+  .page-subtitle {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 20px;
   }
 
-  /* ── FOCUS HIGHLIGHT ── */
+  /* Focus box */
   .focus-box {
-    border: 1px solid var(--accent);
-    background: rgba(232, 255, 71, 0.04);
+    background: #fff;
+    border: 2px solid #333;
     border-radius: 6px;
-    padding: 18px 22px;
-    margin-bottom: 28px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
     display: flex;
-    align-items: center;
-    gap: 16px;
-    transition: background 0.2s;
+    align-items: flex-start;
+    gap: 12px;
   }
-  .focus-box:hover { background: rgba(232, 255, 71, 0.07); }
-  .focus-label {
-    font-family: var(--mono);
+  .focus-tag {
+    background: #333;
+    color: #fff;
     font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent);
-    white-space: nowrap;
+    font-weight: bold;
     padding: 3px 8px;
-    border: 1px solid rgba(232,255,71,0.3);
     border-radius: 3px;
+    white-space: nowrap;
+    margin-top: 2px;
   }
   .focus-text {
-    font-size: 14px;
-    color: var(--text);
-    line-height: 1.5;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #333;
   }
-  .focus-text strong { color: var(--accent); }
 
-  /* ── SECTION LABEL ── */
+  /* Section label */
   .section-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.12em;
+    font-size: 11px;
     text-transform: uppercase;
-    color: var(--text-dim);
-    margin-bottom: 12px;
+    letter-spacing: 0.08em;
+    color: #999;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 6px;
   }
 
-  /* ── CHANNEL GRID ── */
+  /* Channel grid */
   .channel-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 14px;
-    margin-bottom: 32px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
   }
 
-  .channel-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
+  /* Channel card */
+  .card {
+    background: #fff;
+    border: 1px solid #ddd;
     border-radius: 6px;
-    padding: 20px;
-    transition: border-color 0.15s, transform 0.15s;
-    cursor: default;
-    position: relative;
-    overflow: hidden;
+    padding: 16px;
+    border-top: 3px solid #ccc;
   }
-  .channel-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-  }
-  .channel-card.up::before { background: var(--up); }
-  .channel-card.down::before { background: var(--down); }
-  .channel-card.watch::before { background: var(--watch); }
-  .channel-card.neutral::before { background: var(--border); }
+  .card.green { border-top-color: #4caf50; }
+  .card.red   { border-top-color: #f44336; }
+  .card.amber { border-top-color: #ff9800; }
+  .card.grey  { border-top-color: #ccc; background: #fafafa; }
 
-  .channel-card:hover {
-    border-color: #3a3a44;
-    transform: translateY(-1px);
-  }
-
-  .card-top {
+  .card-header {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    margin-bottom: 14px;
+    align-items: center;
+    margin-bottom: 10px;
   }
-  .channel-name {
+  .card-name {
     font-size: 12px;
-    font-weight: 500;
-    color: var(--text-muted);
-    letter-spacing: 0.02em;
+    font-weight: bold;
+    color: #555;
   }
-  .status-badge {
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 2px 6px;
-    border-radius: 3px;
+  .badge {
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-weight: bold;
   }
-  .status-badge.up { background: rgba(61,220,132,0.12); color: var(--up); }
-  .status-badge.down { background: rgba(255,92,92,0.12); color: var(--down); }
-  .status-badge.watch { background: rgba(255,179,71,0.12); color: var(--watch); }
-  .status-badge.neutral { background: var(--surface-2); color: var(--text-muted); }
+  .badge.green { background: #e8f5e9; color: #2e7d32; }
+  .badge.red   { background: #ffebee; color: #c62828; }
+  .badge.amber { background: #fff3e0; color: #e65100; }
 
   .metric-value {
-    font-family: var(--mono);
-    font-size: 28px;
-    font-weight: 500;
-    letter-spacing: -0.04em;
-    color: var(--text);
-    margin-bottom: 6px;
-    line-height: 1;
+    font-size: 22px;
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 2px;
   }
   .metric-label {
     font-size: 11px;
-    color: var(--text-muted);
-    margin-bottom: 14px;
-  }
-
-  .delta-row {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    color: #999;
+    margin-bottom: 8px;
   }
   .delta {
-    font-family: var(--mono);
-    font-size: 13px;
-    font-weight: 500;
+    font-size: 12px;
+    font-weight: bold;
   }
-  .delta.up { color: var(--up); }
-  .delta.down { color: var(--down); }
-  .delta.watch { color: var(--watch); }
+  .delta.up   { color: #4caf50; }
+  .delta.down { color: #f44336; }
+  .delta.flat { color: #ff9800; }
   .delta-context {
     font-size: 11px;
-    color: var(--text-muted);
+    color: #aaa;
+    margin-left: 4px;
   }
 
-  .card-no-data {
-    background: var(--surface);
-    border: 1px dashed var(--border);
-    border-radius: 6px;
-    padding: 20px;
+  /* No data card */
+  .no-data {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 140px;
-  }
-  .card-no-data span {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-dim);
-    text-align: center;
-    line-height: 1.6;
+    height: 100px;
+    font-size: 12px;
+    color: #bbb;
+    font-style: italic;
   }
 
-  /* ── FOOTER ── */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 18px 28px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-muted);
-  }
-  footer .data-freshness { display: flex; align-items: center; gap: 10px; }
-  footer .freshness-ok { color: var(--up); }
-
-  /* ── ANNOTATIONS ── */
-  .annotation {
-    display: inline-block;
-    background: rgba(232,255,71,0.08);
-    border: 1px dashed rgba(232,255,71,0.25);
-    border-radius: 4px;
-    padding: 2px 7px;
-    font-family: var(--mono);
-    font-size: 10px;
-    color: rgba(232,255,71,0.6);
-    margin-left: 8px;
-    vertical-align: middle;
-  }
-
-  /* ── SCOPING NOTE PANEL ── */
-  .scope-panel {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--accent);
+  /* Footer */
+  .footer {
+    background: #fff;
+    border: 1px solid #ddd;
     border-radius: 6px;
-    padding: 18px 22px;
-    margin-top: 32px;
-  }
-  .scope-panel h3 {
-    font-family: var(--mono);
+    padding: 10px 16px;
     font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 12px;
+    color: #888;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
   }
-  .scope-panel ul {
-    list-style: none;
+  .footer .dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #4caf50;
+    margin-right: 6px;
+  }
+
+  /* Scoping notes */
+  .notes-box {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-left: 4px solid #555;
+    border-radius: 4px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+  }
+  .notes-box h3 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #555;
+    margin-bottom: 10px;
+  }
+  .notes-box ul {
+    padding-left: 16px;
     display: flex;
     flex-direction: column;
     gap: 6px;
   }
-  .scope-panel li {
+  .notes-box li {
     font-size: 12px;
-    color: var(--text-muted);
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
+    color: #666;
     line-height: 1.5;
   }
-  .scope-panel li::before {
-    content: '—';
-    color: var(--text-dim);
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-  .scope-panel li strong { color: var(--text); }
+  .notes-box li strong { color: #333; }
 
-  /* ── TABS ── */
+  /* V2 tabs (greyed out) */
   .tab-row {
     display: flex;
-    gap: 2px;
-    margin-bottom: 20px;
+    gap: 6px;
+    margin-bottom: 16px;
   }
   .tab {
     padding: 6px 14px;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--text-muted);
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    cursor: pointer;
+    border: 1px solid #ddd;
     border-radius: 4px;
-    transition: all 0.15s;
+    font-size: 12px;
+    background: #fff;
+    cursor: pointer;
+    color: #555;
   }
-  .tab:hover { border-color: #444; color: var(--text); }
   .tab.active {
-    background: var(--surface-2);
-    border-color: var(--accent);
-    color: var(--accent);
+    background: #333;
+    color: #fff;
+    border-color: #333;
+  }
+  .tab.disabled {
+    color: #ccc;
+    cursor: not-allowed;
+    border-color: #eee;
   }
 </style>
 </head>
 <body>
 
-<div class="wireframe-banner">WIREFRAME — MarketPulse v1 — Task 1: Product Scoping</div>
+<div class="banner">
+  [ WIREFRAME SKETCH — MarketPulse v1 — Task 1: Product Scoping — Not final UI ]
+</div>
 
-<!-- TOP BAR -->
-<nav class="topbar">
-  <div class="logo">Market<span>Pulse</span></div>
-  <div class="brand-select-wrap">
-    <label>Brand</label>
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo">MarketPulse</div>
+  <div>
+    <label style="font-size:12px; color:#888; margin-right:6px;">Brand:</label>
     <select id="brandSelect" onchange="switchBrand(this.value)">
       <option value="alpha">Alpha Apparel</option>
       <option value="beta">Beta Beverages</option>
       <option value="gamma">Gamma Gadgets</option>
     </select>
   </div>
-  <div class="topbar-right">
-    <div class="pulse-dot"></div>
-    <span>Last refresh: 26 May 2026, 08:00</span>
-  </div>
+  <div class="refresh-info">Last refreshed: 26 May 2026, 08:00</div>
 </nav>
 
-<!-- MAIN CONTENT -->
-<main>
+<!-- MAIN -->
+<div class="container">
 
-  <div class="page-header">
-    <div>
-      <h1 id="brandTitle">Alpha Apparel <span style="color:var(--text-muted); font-weight:300">— weekly view</span></h1>
-    </div>
-    <div class="week-label">19 MAY – 25 MAY 2026</div>
-  </div>
+  <div class="page-title" id="brandTitle">Alpha Apparel</div>
+  <div class="page-subtitle">Weekly performance — 19 May to 25 May 2026</div>
 
-  <!-- FOCUS HIGHLIGHT -->
+  <!-- FOCUS BOX -->
   <div class="focus-box">
-    <div class="focus-label">Focus here</div>
+    <div class="focus-tag">FOCUS HERE</div>
     <div class="focus-text" id="focusText">
-      <strong>Paid Social</strong> is the standout this week — CTR up <strong>+23%</strong> week-on-week. Email is the one to watch: open rate dropped <strong>−18%</strong>, the sharpest fall across all channels.
+      <strong>Paid Social</strong> is the standout this week — CTR up +23% week-on-week.
+      Email is the one to watch: open rate dropped −18%, the sharpest fall across all channels.
     </div>
   </div>
 
-  <!-- TAB ROW (v1 has only "This Week") -->
+  <!-- TABS -->
   <div class="tab-row">
     <button class="tab active">This week</button>
-    <button class="tab" style="opacity:0.4; cursor:not-allowed;" title="Coming in v2">Trends (v2)</button>
-    <button class="tab" style="opacity:0.4; cursor:not-allowed;" title="Coming in v2">All brands (v2)</button>
+    <button class="tab disabled" title="Coming in v2">Trends (v2)</button>
+    <button class="tab disabled" title="Coming in v2">All brands (v2)</button>
   </div>
 
   <div class="section-label">Channels — week-on-week performance</div>
 
   <!-- CHANNEL GRID -->
-  <div class="channel-grid" id="channelGrid">
-    <!-- Populated by JS -->
+  <div class="channel-grid" id="channelGrid"></div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div><span class="dot"></span>Data as of 26 May 2026 · Source: CSV exports → /data/alpha/</div>
+    <div>MarketPulse v1 · Internal use only</div>
   </div>
 
-  <div class="scope-panel">
-    <h3>v1 Scoping Notes — Wireframe Annotations</h3>
+  <!-- SCOPING NOTES -->
+  <div class="notes-box">
+    <h3>Wireframe Notes (Scoping Decisions)</h3>
     <ul>
-      <li><strong>Brand selector:</strong> Multi-client from day one. Each brand maps to its own /data/[brand]/ CSV folder.</li>
-      <li><strong>Focus highlight:</strong> Computed as biggest absolute WoW delta across all channels. Logic is simple and visible — no black box.</li>
-      <li><strong>WoW delta:</strong> (this_week − last_week) / last_week × 100. Same formula every time. Defined once, used everywhere.</li>
-      <li><strong>Status badges (On track / Watch / Underperforming):</strong> Threshold-based. Default: &gt;+10% = On track, &lt;−10% = Underperforming. Configurable per brand in v2.</li>
-      <li><strong>"Trends" and "All brands" tabs:</strong> Visible but disabled. Shows users what's coming without hiding v1's intentional scope.</li>
-      <li><strong>No login:</strong> Internal tool. Shared intranet link. Auth is a v2 concern when client-facing access is needed.</li>
-      <li><strong>Missing data card:</strong> Shows explicitly when a channel has no data for the week. Never silently shows zero or stale data.</li>
+      <li><strong>Brand selector:</strong> Multi-client from day one. Each brand maps to its own CSV folder — /data/[brand]/</li>
+      <li><strong>Focus highlight:</strong> Biggest absolute week-on-week delta across channels. Simple rule, no black box.</li>
+      <li><strong>WoW delta formula:</strong> (this week − last week) / last week × 100. Same formula every time.</li>
+      <li><strong>Status badges:</strong> Threshold-based. Above +10% = On track. Below −10% = Underperforming. In between = Watch.</li>
+      <li><strong>V2 tabs visible but disabled:</strong> Shows what's coming without pretending it's built.</li>
+      <li><strong>No login required:</strong> Internal tool on shared intranet link. Auth is a v2 concern.</li>
+      <li><strong>Missing data:</strong> Shows "No data this week" card explicitly. Never shows zero or stale data silently.</li>
     </ul>
   </div>
 
-</main>
-
-<!-- FOOTER -->
-<footer>
-  <div class="data-freshness">
-    <span class="freshness-ok">●</span>
-    <span>Data as of 26 May 2026. Source: CSV exports → /data/alpha/</span>
-  </div>
-  <span>MarketPulse v1 · Internal use only</span>
-</footer>
+</div>
 
 <script>
 const brands = {
   alpha: {
     name: 'Alpha Apparel',
-    focus: '<strong>Paid Social</strong> is the standout this week — CTR up <strong>+23%</strong> week-on-week. Email is the one to watch: open rate dropped <strong>−18%</strong>, the sharpest fall across all channels.',
+    focus: '<strong>Paid Social</strong> is the standout this week — CTR up +23% week-on-week. Email is the one to watch: open rate dropped −18%, the sharpest fall across all channels.',
     channels: [
-      { name: 'Paid Social', metric: '4.2%', label: 'Click-through rate', delta: '+23%', dir: 'up', status: 'On track' },
-      { name: 'Paid Search', metric: '£8,340', label: 'Spend this week', delta: '+5%', dir: 'up', status: 'On track' },
-      { name: 'Email', metric: '18.1%', label: 'Open rate', delta: '−18%', dir: 'down', status: 'Underperforming' },
-      { name: 'Organic Social', metric: '14.7K', label: 'Impressions', delta: '−3%', dir: 'watch', status: 'Watch' },
-      { name: 'SEO / Organic', metric: '2,810', label: 'Sessions from organic', delta: '+11%', dir: 'up', status: 'On track' },
-      { name: 'Display', metric: null, label: null, delta: null, dir: null, status: null },
+      { name: 'Paid Social',    metric: '4.2%',   label: 'Click-through rate',       delta: '+23%', dir: 'up',   status: 'On track' },
+      { name: 'Paid Search',    metric: '£8,340',  label: 'Spend this week',           delta: '+5%',  dir: 'up',   status: 'On track' },
+      { name: 'Email',          metric: '18.1%',   label: 'Open rate',                 delta: '−18%', dir: 'down', status: 'Underperforming' },
+      { name: 'Organic Social', metric: '14.7K',   label: 'Impressions',               delta: '−3%',  dir: 'flat', status: 'Watch' },
+      { name: 'SEO / Organic',  metric: '2,810',   label: 'Sessions from organic',     delta: '+11%', dir: 'up',   status: 'On track' },
+      { name: 'Display',        metric: null,      label: null,                        delta: null,   dir: null,   status: null },
     ]
   },
   beta: {
     name: 'Beta Beverages',
-    focus: '<strong>Email</strong> is performing strongly — open rate hit <strong>+31%</strong> above last week. Paid Search spend efficiency is declining: CPC up <strong>+19%</strong>, conversions flat.',
+    focus: '<strong>Email</strong> is performing strongly — open rate hit +31% above last week. Paid Search spend efficiency is declining: CPC up +19%, conversions flat.',
     channels: [
-      { name: 'Email', metric: '34.6%', label: 'Open rate', delta: '+31%', dir: 'up', status: 'On track' },
-      { name: 'Paid Search', metric: '£3.20', label: 'Cost per click', delta: '+19%', dir: 'down', status: 'Watch' },
-      { name: 'Paid Social', metric: '1.8%', label: 'Click-through rate', delta: '+2%', dir: 'up', status: 'On track' },
-      { name: 'Organic Social', metric: '8.2K', label: 'Impressions', delta: '−12%', dir: 'down', status: 'Underperforming' },
-      { name: 'SEO / Organic', metric: null, label: null, delta: null, dir: null, status: null },
-      { name: 'Display', metric: '0.9%', label: 'CTR', delta: '+4%', dir: 'up', status: 'On track' },
+      { name: 'Email',          metric: '34.6%',  label: 'Open rate',             delta: '+31%', dir: 'up',   status: 'On track' },
+      { name: 'Paid Search',    metric: '£3.20',  label: 'Cost per click',        delta: '+19%', dir: 'down', status: 'Watch' },
+      { name: 'Paid Social',    metric: '1.8%',   label: 'Click-through rate',    delta: '+2%',  dir: 'up',   status: 'On track' },
+      { name: 'Organic Social', metric: '8.2K',   label: 'Impressions',           delta: '−12%', dir: 'down', status: 'Underperforming' },
+      { name: 'SEO / Organic',  metric: null,     label: null,                    delta: null,   dir: null,   status: null },
+      { name: 'Display',        metric: '0.9%',   label: 'CTR',                   delta: '+4%',  dir: 'up',   status: 'On track' },
     ]
   },
   gamma: {
     name: 'Gamma Gadgets',
-    focus: 'All channels within normal range this week. <strong>Display</strong> shows the highest positive movement at <strong>+14%</strong> CTR — worth noting before the client call.',
+    focus: 'All channels within normal range this week. <strong>Display</strong> shows the highest positive movement at +14% CTR — worth noting before the client call.',
     channels: [
-      { name: 'Paid Social', metric: '2.9%', label: 'Click-through rate', delta: '+8%', dir: 'up', status: 'On track' },
-      { name: 'Paid Search', metric: '£11,200', label: 'Spend this week', delta: '−1%', dir: 'watch', status: 'On track' },
-      { name: 'Email', metric: '22.3%', label: 'Open rate', delta: '+6%', dir: 'up', status: 'On track' },
-      { name: 'Organic Social', metric: '31K', label: 'Impressions', delta: '+9%', dir: 'up', status: 'On track' },
-      { name: 'SEO / Organic', metric: '5,100', label: 'Sessions from organic', delta: '+3%', dir: 'up', status: 'On track' },
-      { name: 'Display', metric: '1.4%', label: 'CTR', delta: '+14%', dir: 'up', status: 'On track' },
+      { name: 'Paid Social',    metric: '2.9%',   label: 'Click-through rate',    delta: '+8%',  dir: 'up',   status: 'On track' },
+      { name: 'Paid Search',    metric: '£11,200', label: 'Spend this week',      delta: '−1%',  dir: 'flat', status: 'On track' },
+      { name: 'Email',          metric: '22.3%',  label: 'Open rate',             delta: '+6%',  dir: 'up',   status: 'On track' },
+      { name: 'Organic Social', metric: '31K',    label: 'Impressions',           delta: '+9%',  dir: 'up',   status: 'On track' },
+      { name: 'SEO / Organic',  metric: '5,100',  label: 'Sessions from organic', delta: '+3%',  dir: 'up',   status: 'On track' },
+      { name: 'Display',        metric: '1.4%',   label: 'CTR',                   delta: '+14%', dir: 'up',   status: 'On track' },
     ]
   }
 };
 
 function renderChannels(brandKey) {
   const brand = brands[brandKey];
-  document.getElementById('brandTitle').innerHTML = `${brand.name} <span style="color:var(--text-muted); font-weight:300">— weekly view</span>`;
+  document.getElementById('brandTitle').textContent = brand.name;
   document.getElementById('focusText').innerHTML = brand.focus;
 
   const grid = document.getElementById('channelGrid');
@@ -516,26 +382,27 @@ function renderChannels(brandKey) {
   brand.channels.forEach(ch => {
     if (!ch.metric) {
       grid.innerHTML += `
-        <div class="card-no-data">
-          <span>${ch.name}<br>No data this week</span>
+        <div class="card grey">
+          <div class="card-name">${ch.name}</div>
+          <div class="no-data">No data this week</div>
         </div>`;
       return;
     }
 
-    const dirClass = ch.dir === 'up' ? 'up' : ch.dir === 'down' ? 'down' : 'watch';
+    const cardClass = ch.dir === 'up' ? 'green' : ch.dir === 'down' ? 'red' : 'amber';
+    const badgeClass = ch.status === 'On track' ? 'green' : ch.status === 'Underperforming' ? 'red' : 'amber';
     const arrow = ch.dir === 'up' ? '▲' : ch.dir === 'down' ? '▼' : '●';
-    const statusLabel = ch.status === 'On track' ? 'on track' : ch.status === 'Underperforming' ? 'underperforming' : 'watch';
 
     grid.innerHTML += `
-      <div class="channel-card ${dirClass}">
-        <div class="card-top">
-          <div class="channel-name">${ch.name}</div>
-          <div class="status-badge ${dirClass}">${statusLabel}</div>
+      <div class="card ${cardClass}">
+        <div class="card-header">
+          <div class="card-name">${ch.name}</div>
+          <span class="badge ${badgeClass}">${ch.status}</span>
         </div>
         <div class="metric-value">${ch.metric}</div>
         <div class="metric-label">${ch.label}</div>
-        <div class="delta-row">
-          <span class="delta ${dirClass}">${arrow} ${ch.delta}</span>
+        <div>
+          <span class="delta ${ch.dir}">${arrow} ${ch.delta}</span>
           <span class="delta-context">vs last week</span>
         </div>
       </div>`;
@@ -543,7 +410,6 @@ function renderChannels(brandKey) {
 }
 
 function switchBrand(val) { renderChannels(val); }
-
 renderChannels('alpha');
 </script>
 </body>
