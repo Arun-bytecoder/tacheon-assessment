@@ -40,7 +40,3 @@ A working Python pipeline that fetches hourly weather data from Open-Meteo, tran
 See [`task-2-pipeline/README.md`](task-2-pipeline/README.md) for full details.
 
 ---
-
-## General Notes
-
-Both tasks were completed within the 4-day window. Commits were made incrementally throughout to reflect real working process, not a single end submission.
