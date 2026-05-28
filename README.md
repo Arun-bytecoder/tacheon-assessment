@@ -25,7 +25,7 @@ tacheon-assessment/
 │       └── summary_queries.sql
 │
 ├── .gitignore
-└── README.md                
+└── README.md                  # This file
 ```
 
 ---
@@ -62,3 +62,7 @@ Key highlights:
 See [`task-2-pipeline/README.md`](task-2-pipeline/README.md) for full details.
 
 ---
+
+## Commit History
+
+Commits were made incrementally throughout both tasks to reflect how I actually worked — not a single submission at the end. Each commit message describes what changed and why.
