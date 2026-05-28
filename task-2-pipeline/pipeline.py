@@ -42,6 +42,9 @@ CITY_COORDS: dict[str, dict] = {
     "Paris":     {"latitude": 48.8566, "longitude": 2.3522},
     "Dubai":     {"latitude": 25.2048, "longitude": 55.2708},
     "Singapore": {"latitude": 1.3521,  "longitude": 103.8198},
+    "Chennai":   {"latitude": 12.9856, "longitude": 80.2614},
+    "Salem":  {"latitude": 11.6643, "longitude": 78.1460},
+    "Delhi":  {"latitude": 28.6139, "longitude": 77.2090},
 }
 
 OPEN_METEO_URL = "https://api.open-meteo.com/v1/forecast"
