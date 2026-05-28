@@ -6,7 +6,7 @@
 |---|---|
 | `PRODUCT_BRIEF.md` | Full scoping document — the core deliverable |
 | `wireframe.html` | Interactive wireframe of the v1 dashboard |
-| `FLOW_DIAGRAM.md` | User flow and data flow in text/diagram form |
+| `FLOWDIAGRAM.md` | User flow and data flow in text/diagram form |
 
 ---
 
